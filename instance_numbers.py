@@ -5,6 +5,20 @@ import sys
 import datetime
 from time import sleep
 
+'''
+Produced 2017 for autoscaling demo for Norton Site Reliability Engineering at Symantec
+
+This script checks how many instances are in the provided scale set implementing the azure python SDK.
+The script accesses user credentials and queries and displays the number of instances every 15 seconds
+for a run-time duration of 20 minutes.
+
+Usage:
+bash$: python3 instance_numbers.py <user email> <password>
+
+Password protection on command-line has not yet been implemented.
+
+'''
+
 # Replace this with your subscription id
 subscription_id = "39ac48fb-fea0-486a-ba84-e0ae9b06c663"
 resource_group_name = "jzimmerman-con-rg"
@@ -17,31 +31,9 @@ credentials = UserPassCredentials(
 
 client = compute.compute.ComputeManagementClient(credentials, subscription_id)
 
-#the_instances = client.virtual_machine_scale_set_vms.list(resource_group_name, vmss_name)
-#print("the type of the_instances is {}, dir is {}, nexting {}".format(type(the_instances), dir(the_instances), the_instances.next()))
-
-def get_active():
-    '''
-    returns -> tuple of lists. first list is active vms instances, second list is deleting
-    '''
-    succeeded = []
-    deleting = []
-    creating = []
-    the_instances = client.virtual_machine_scale_set_vms.list(resource_group_name, vmss_name)
-    for inst in the_instances:
-        if inst.provisioning_state == "Succeeded":
-            succeeded.append(inst)
-        elif inst.provisioning_state == "Deleting":
-            deleting.append(inst)
-        elif inst.provisioning_state == "Creating":
-            creating.append(inst)
-    return succeeded, deleting, creating
-
-
 #print data
-for i in range(40):
-    print("check {}--------------------------------------------------------------------".format(i))
-
+for i in range(80):
+    print("check {} at time {} -----------------------------".format(i, datetime.datetime.now().strftime("%H:%M:%S")))
     succeeded = 0
     deleting = 0
     creating = 0
@@ -52,8 +44,5 @@ for i in range(40):
             deleting += 1
         elif inst.provisioning_state == "Creating":
             creating += 1
-        print("\tSucceeded {}\tCreating {}\t Deleting {}".format(succeeded, deleting, creating))
-    #data = get_active()
-    #print(data)
-    #print("{} Active: {} Dead: {} Creating: {}".format(datetime.datetime.now(), len(data[0]), len(data[1]), len(data[2])))
-    sleep(30)
+    print("\tSucceeded {}\tDeleting {}\t Creating {}".format(succeeded, deleting, creating))
+    sleep(15)
