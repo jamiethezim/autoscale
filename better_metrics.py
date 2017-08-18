@@ -56,18 +56,17 @@ earlier = now - datetime.timedelta(hours=1) #datetime objects
 now = now.strftime("%Y-%m-%dT%H:%M:%SZ") #string objects
 earlier = earlier.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-
-filter = " and ".join([
+_filter = " and ".join([
     "name.value eq 'Network In'",
     "aggregationType eq 'Total'",
     "startTime eq {}".format(earlier),
     "endTime eq {}".format(now),
-    "timeGrain eq duration'PT1M'"
+    "timeGrain eq duration'PT5M'"
 ])
 
 metrics_data = client.metrics.list(
     resource_id,
-    filter=filter
+    filter=_filter
 )
 
 for item in metrics_data:

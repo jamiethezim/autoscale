@@ -1,0 +1,9 @@
+{
+   "tenantId": "3b217a9b-6c58-428b-b022-5ad741ce2016",
+   "appId": "<your app id>",
+   "appSecret": "<your app secret>",
+   "subscriptionId": "39ac48fb-fea0-486a-ba84-e0ae9b06c663",
+   "region": "eastus",
+   "resourceGroup": "jzimmerman-con-rg",
+   "vmssName": "jzimmerman-test-ss"
+}

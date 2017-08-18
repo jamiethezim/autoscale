@@ -10,7 +10,7 @@ Produced 2017 for autoscaling demo for Norton Site Reliability Engineering at Sy
 
 This script checks how many instances are in the provided scale set implementing the azure python SDK.
 The script accesses user credentials and queries and displays the number of instances every 15 seconds
-for a run-time duration of 20 minutes.
+for a run-time of indefinite.
 
 Usage:
 bash$: python3 instance_numbers.py <user email> <password>
