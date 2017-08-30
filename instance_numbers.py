@@ -1,32 +1,33 @@
 from azure.mgmt import compute
 from azure.common.credentials import UserPassCredentials
 import json
-import sys
 import datetime
 from time import sleep
+import creds
 
 '''
 Produced 2017 for autoscaling demo for Norton Site Reliability Engineering at Symantec
 
 This script checks how many instances are in the provided scale set implementing the azure python SDK.
 The script accesses user credentials and queries and displays the number of instances every 15 seconds
-for a run-time of indefinite.
+for a run-time of 20 minutes.
 
 Usage:
-bash$: python3 instance_numbers.py <user email> <password>
+bash$: python3 instance_numbers.py
 
-Password protection on command-line has not yet been implemented.
+Password protection is implemented using another file creds.py. The global variables are USERNAME and PASSWORD,
+which are imported to this script and used to create the credential object.
 
 '''
 
 # Replace this with your subscription id
 subscription_id = "39ac48fb-fea0-486a-ba84-e0ae9b06c663"
-resource_group_name = "jzimmerman-con-rg"
-vmss_name = "jzimmerman-test-ss"
+resource_group_name = "jzimmerman-demo"
+vmss_name = "mini-vmss"
 
 credentials = UserPassCredentials(
-    sys.argv[1],  # Your user
-    sys.argv[2],      # Your password
+    creds.USERNAME,  # Your user
+    creds.PASSWORD,      # Your password
 )
 
 client = compute.compute.ComputeManagementClient(credentials, subscription_id)

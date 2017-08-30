@@ -1,14 +1,14 @@
 from azure.monitor import MonitorClient
 from azure.common.credentials import UserPassCredentials
-import sys
+import creds
 
 # Replace this with your subscription id
 subscription_id = "39ac48fb-fea0-486a-ba84-e0ae9b06c663"
 
 # See above for details on creating different types of AAD credentials
 credentials = UserPassCredentials(
-    sys.argv[1],  # Your user
-    sys.argv[2],      # Your password
+    creds.USERNAME,  # Your user
+    creds.PASSWORD,      # Your password
 )
 
 client = MonitorClient(
@@ -22,8 +22,8 @@ import datetime
 # using the according management or to build the URL directly
 # Example for a ARM VM
 
-resource_group_name = "jzimmerman-con-rg"
-vmss_name = "jzimmerman-test-ss"
+resource_group_name = "jzimmerman-bottleneck"
+vmss_name = "baby-vmss"
 resource_id = (
     "subscriptions/{}/"
     "resourceGroups/{}/"
@@ -56,17 +56,17 @@ earlier = now - datetime.timedelta(hours=1) #datetime objects
 now = now.strftime("%Y-%m-%dT%H:%M:%SZ") #string objects
 earlier = earlier.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-_filter = " and ".join([
-    "name.value eq 'Network In'",
+filter_ = " and ".join([
+    "name.value eq 'Percentage CPU'",
     "aggregationType eq 'Total'",
     "startTime eq {}".format(earlier),
     "endTime eq {}".format(now),
-    "timeGrain eq duration'PT5M'"
+    "timeGrain eq duration'PT1M'"
 ])
 
 metrics_data = client.metrics.list(
     resource_id,
-    filter=_filter
+    filter=filter_
 )
 
 for item in metrics_data:
@@ -74,8 +74,8 @@ for item in metrics_data:
     print("{} ({})".format(item.name.localized_value, item.unit.name))
     for data in item.data:
         # azure.monitor.models.MetricData
-        #print("{}: {}".format(data.time_stamp, data.total))
-        print("{}: {} MB".format(data.time_stamp, data.total/1000000 if isinstance(data.total, float) else data.total))
+        print("{}: {}".format(data.time_stamp, data.total))
+        #print("{}: {:.5f} MB".format(data.time_stamp, data.total/1000000 if isinstance(data.total, float) else data.total))
 
 # Example of result:
 # Percentage CPU (percent)
