@@ -1,12 +1,13 @@
 Step 1: Edit creds.py template to use your azure username and password. This is how the Python SDK interacts and queries your azure resources.
+
 This file only be stored locally on your machine. Use good judgement!
 
 Usage:
 
 bash$ python3 insights_metrics.py
 
-  => reads Percentage CPU of a VMSS every minute starting now and in real time ****BROKEN**** 
-  	 this script doesn't work, at least not yet!
+  => reads Percentage CPU of a VMSS every minute starting now and in real time 
+  ****BROKEN**** this script doesn't work, at least not yet!
   
 bash$ python3 better_metrics.py
 
@@ -18,10 +19,10 @@ bash$ python3 instance_numbers.py
 
 ---------------------------------
 
-201-vmss-bottle-autoscale ->
+201-vmss-bottle-autoscale/
 
-	contains the ARM templates, application, and installation script to deploy the stack
+  => contains the ARM templates, application, and installation script to deploy the stack
 
-jmeter-tests ->
+jmeter-tests/
 
-	contains jmeter .jmx test plans, which I used in a load-testing task in VSTS
+  => contains jmeter .jmx test plans, which I used in a load-testing task in VSTS
